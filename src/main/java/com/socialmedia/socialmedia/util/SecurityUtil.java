@@ -67,7 +67,7 @@ public class SecurityUtil {
             .issuedAt(now)
             .expiresAt(validity)
             .subject(userName)
-            .claim("user", user)
+            .claim("user", userName)
             .build();
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
