@@ -9,6 +9,7 @@ import com.socialmedia.socialmedia.domain.User;
 import com.socialmedia.socialmedia.dto.request.UserCreateRequest;
 import com.socialmedia.socialmedia.dto.responce.UserCreateResponce;
 import com.socialmedia.socialmedia.dto.responce.UserResponce;
+import com.socialmedia.socialmedia.exception.EmailAlreadyExistsException;
 import com.socialmedia.socialmedia.exception.EntityNotExistException;
 import com.socialmedia.socialmedia.repository.UserRepository;
 
@@ -19,6 +20,9 @@ public class UserService {
      private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     public UserCreateResponce createNewUser(UserCreateRequest request){
+        if (this.userRepository.existsByEmail(request.getEmail())) {
+            throw new EmailAlreadyExistsException(Common.USER_ALREADY_EXIST);
+        }
         User user = User.builder()
             .firstName(request.getFirstName())
             .lastName(request.getLastName())
