@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.socialmedia.socialmedia.domain.User;
 import com.socialmedia.socialmedia.dto.request.UserCreateRequest;
+import com.socialmedia.socialmedia.dto.responce.UserCreateResponce;
+import com.socialmedia.socialmedia.dto.responce.UserResponce;
 import com.socialmedia.socialmedia.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -24,11 +26,11 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/users")
-    public ResponseEntity<User> createNewUser(@RequestBody UserCreateRequest request) {
+    public ResponseEntity<UserCreateResponce> createNewUser(@RequestBody UserCreateRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(this.userService.createNewUser(request));
     }
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<UserResponce>> getAllUsers() {
         return ResponseEntity.status(HttpStatus.OK).body(this.userService.getAllUsers());
     }
     
