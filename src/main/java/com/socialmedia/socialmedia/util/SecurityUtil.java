@@ -37,6 +37,9 @@ public class SecurityUtil {
 
     public static final MacAlgorithm JWT_ALGORITHM = MacAlgorithm.HS512;
 
+    public long getJwtRefreshTokenExpiration() {
+    return jwtRefreshTokenExpiration;
+    }
     public String createToken(String userName, User user) {
         Instant now = Instant.now();
         Instant validity = now.plus(this.jwtAccessTokenExpiration, ChronoUnit.SECONDS);

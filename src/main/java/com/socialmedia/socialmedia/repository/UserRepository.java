@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import com.socialmedia.socialmedia.domain.User;
 public interface UserRepository extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-        Optional<User> findByEmail(String email);
+    Optional<User> findByEmail(String email);
     Optional<User> findByRefreshToken(String refreshToken);
+    boolean existsByEmail(String email);
 }
