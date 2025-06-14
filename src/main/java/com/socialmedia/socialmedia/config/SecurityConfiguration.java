@@ -23,7 +23,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
-import com.socialmedia.socialmedia.common.Role;
 
 
 @Configuration
@@ -47,7 +46,7 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         authz -> authz
-                        .requestMatchers("/api/v1/auth/**","/api/v1/users").permitAll()
+                        .requestMatchers("/api/v1/auth/**","/api/v1/users","/api/v1/upload","/api/v1/posts").permitAll()
                         .anyRequest().authenticated())
                         .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint))

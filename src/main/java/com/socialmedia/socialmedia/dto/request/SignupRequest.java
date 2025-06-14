@@ -1,5 +1,5 @@
 package com.socialmedia.socialmedia.dto.request;
-import com.socialmedia.socialmedia.common.Role;
+
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class UserCreateRequest {
+public class SignupRequest {
     @NotBlank(message = "First name is required")
     private String firstName;
     @NotBlank(message = "Last name is required")
@@ -24,6 +24,4 @@ public class UserCreateRequest {
     private String profilePictureUrl;
     private String bio;
     private String phoneNumber;
-    @NotBlank(message = "Role is required")
-    private Role role;
 }

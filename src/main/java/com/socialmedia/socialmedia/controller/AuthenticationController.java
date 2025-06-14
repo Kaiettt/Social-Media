@@ -1,6 +1,7 @@
 package com.socialmedia.socialmedia.controller;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.socialmedia.socialmedia.common.Common;
 import com.socialmedia.socialmedia.config.ApiMessage;
 import com.socialmedia.socialmedia.dto.request.LoginDTO;
+import com.socialmedia.socialmedia.dto.request.SignupRequest;
 import com.socialmedia.socialmedia.dto.responce.LoginResponce;
+import com.socialmedia.socialmedia.dto.responce.UserCreateResponce;
 import com.socialmedia.socialmedia.service.AuthenicationService;
 import com.socialmedia.socialmedia.service.UserService;
 
@@ -48,6 +51,15 @@ public class AuthenticationController {
         LoginResponce loginResponce = this.authenicationService.handleLoginResponce(authentication,loginDto.getUsername());
         
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE,loginResponce.getSpringCookie().toString()).body(loginResponce);
+    }
+
+    @PostMapping("/signup")
+    @ApiMessage("Signup succesfully")
+    public ResponseEntity<UserCreateResponce> login(@RequestBody SignupRequest request)  {
+
+        UserCreateResponce user = this.userService.handleSignupUser(request);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
     @GetMapping("/refresh")
     @ApiMessage("Get Access Token")

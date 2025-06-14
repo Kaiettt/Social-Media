@@ -1,4 +1,5 @@
 package com.socialmedia.socialmedia.dto.responce;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,9 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @Builder
-public class RestResponce<T> {
-     private int statusCode;
-    private String error;
-    private Object message;
-    private T data;
+public class ResourceResponce {
+    private long id;
+    private String resourceUrl;
+    private String resourceType;
+    private long postId;
 }
