@@ -18,5 +18,10 @@ public class UserCreateResponce {
     private String firstName;
     private String lastName;
     private String userName;
+    private String profilePictureUrl;
+    private String bio;
+    private String phoneNumber;
+    private int followersCount;
+    private int followingCount;
     private Role role;
 }
