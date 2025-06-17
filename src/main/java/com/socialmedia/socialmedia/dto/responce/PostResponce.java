@@ -17,7 +17,8 @@ public class PostResponce {
     private long id;
     private long userId;
     private String content;
-    private List<String> resources;
+    private List<ResourceResponce> resources;
+    private String userName;
     private String createdAt;
     private String updatedAt;
 }
