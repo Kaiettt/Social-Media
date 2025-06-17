@@ -24,20 +24,24 @@ public class ResourceService {
 
     public List<ResourceResponce> createNewResource(MultipartFile[] multipartFiles) {
         List<ResourceResponce> responses = new ArrayList<>();
-
-        for (MultipartFile multipartFile : multipartFiles) {
+        for (MultipartFile file : multipartFiles) {
             try {
-                File file = convertMultipartToFile(multipartFile);
+                
+                String contentType = file.getContentType();
+                boolean isVideo = contentType != null && contentType.startsWith("video/");
 
-                String imageUrl = storageService.uploadImageToDrive(file);
+                String imageUrl = isVideo
+                    ? this.storageService.uploadVideo(file, "videos").get("url").toString()
+                    : this.storageService.uploadFile(file, "images").get("url").toString();
+
 
                 ResourceResponce response = new ResourceResponce();
                 response.setResourceUrl(imageUrl);
-                response.setResourceType(multipartFile.getContentType());
+                response.setResourceType(file.getContentType());
                 responses.add(response);
 
             } catch (Exception e) {
-                System.out.println("Failed to upload: " + multipartFile.getOriginalFilename());
+                System.out.println("Failed to upload: " + file.getOriginalFilename());
                 e.printStackTrace();
             }
         }
@@ -45,13 +49,6 @@ public class ResourceService {
         return responses;
     }
 
-    private File convertMultipartToFile(MultipartFile multipartFile) throws Exception {
-        File convFile = new File(multipartFile.getOriginalFilename());
-        try (FileOutputStream fos = new FileOutputStream(convFile)) {
-            fos.write(multipartFile.getBytes());
-        }
-        return convFile;
-    }
 
     public List<Resource> createNewResource(List<ResourceRequest> resources, Post post) {
         if (resources == null || resources.isEmpty()) {

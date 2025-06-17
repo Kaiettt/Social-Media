@@ -24,6 +24,18 @@ public class ResourceController {
     private final ResourceService resourceService;
     @PostMapping("/upload")
     public ResponseEntity<List<ResourceResponce>> uploadResource(@RequestParam("files") MultipartFile[] multipartFiles) {
+        if (multipartFiles == null || multipartFiles.length == 0) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+        }
+
+        // Validate file types and sizes if necessary
+        for (MultipartFile file : multipartFiles) {
+            if (file.isEmpty() || file.getSize() > 5 * 1024 * 1024) { // Example: max size 5MB
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
+            }
+        }
+
+        // Call the service to handle the file upload
        return ResponseEntity.status(HttpStatus.CREATED).body(this.resourceService.createNewResource(multipartFiles));
     }
 
