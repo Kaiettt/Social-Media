@@ -10,6 +10,7 @@ import com.socialmedia.socialmedia.common.Role;
 import com.socialmedia.socialmedia.domain.User;
 import com.socialmedia.socialmedia.dto.request.SignupRequest;
 import com.socialmedia.socialmedia.dto.request.UserCreateRequest;
+import com.socialmedia.socialmedia.dto.responce.SignupResponce;
 import com.socialmedia.socialmedia.dto.responce.UserCreateResponce;
 import com.socialmedia.socialmedia.dto.responce.UserResponce;
 import com.socialmedia.socialmedia.exception.EmailAlreadyExistsException;
@@ -94,38 +95,7 @@ public User getUserById(long id) {
                 .orElseThrow(() -> new EntityNotExistException(Common.REFRESH_TOKEN_NOT_FOUND));
     }
 
-    public UserCreateResponce handleSignupUser(SignupRequest request) {
-        if (this.userRepository.existsByEmail(request.getEmail())) {
-            throw new EmailAlreadyExistsException(Common.USER_ALREADY_EXIST);
-        }
-        User user = User.builder()
-                .firstName(request.getFirstName())
-                .lastName(request.getLastName())
-                .email(request.getEmail())
-                .password(this.passwordEncoder.encode(request.getPassword()))
-                .profilePictureUrl(request.getProfilePictureUrl())
-                .bio(request.getBio())
-                .followersCount(0)
-                .followingCount(0)
-                .phoneNumber(request.getPhoneNumber())
-                .role(Role.USER)
-                .build();
-        user = this.userRepository.save(user);
-        UserCreateResponce responce = UserCreateResponce.builder()
-                .id(user.getId())
-                .firstName(user.getFirstName())
-                .lastName(user.getLastName())
-                .userName(user.getEmail())
-                .profilePictureUrl(user.getProfilePictureUrl())
-                .bio(user.getBio())
-                .phoneNumber(user.getPhoneNumber())
-                .followersCount(0)
-                .followingCount(0)
-                .role(user.getRole())
-                .build();
-        return responce;
-    }
-
+    
 
 
 }

@@ -10,20 +10,25 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.socialmedia.socialmedia.common.Common;
 import com.socialmedia.socialmedia.config.ApiMessage;
 import com.socialmedia.socialmedia.dto.request.LoginDTO;
 import com.socialmedia.socialmedia.dto.request.SignupRequest;
+import com.socialmedia.socialmedia.dto.request.VerficationRequest;
 import com.socialmedia.socialmedia.dto.responce.LoginResponce;
-import com.socialmedia.socialmedia.dto.responce.UserCreateResponce;
+import com.socialmedia.socialmedia.dto.responce.SignupResponce;
+import com.socialmedia.socialmedia.exception.VerificationException;
 import com.socialmedia.socialmedia.service.AuthenicationService;
 import com.socialmedia.socialmedia.service.UserService;
 
 import jakarta.persistence.EntityExistsException;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -55,12 +60,24 @@ public class AuthenticationController {
 
     @PostMapping("/signup")
     @ApiMessage("Signup succesfully")
-    public ResponseEntity<UserCreateResponce> login(@RequestBody SignupRequest request)  {
+    public ResponseEntity<SignupResponce> login(@Valid @RequestBody SignupRequest request)  {
 
-        UserCreateResponce user = this.userService.handleSignupUser(request);
+        SignupResponce user = this.authenicationService.handleSignupUser(request);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
+    @PutMapping("/confirm")
+    public ResponseEntity<SignupResponce> confirm(@Valid @RequestBody VerficationRequest request) throws VerificationException {
+        return ResponseEntity.ok().body(this.authenicationService.handleConfirmation(request.getEmail(),Long.parseLong(request.getToken())));
+    }
+
+    @PutMapping("/resend-code")
+    public ResponseEntity<Void> resendCode(@RequestParam("email") String email) throws EntityExistsException {
+        this.authenicationService.handleResendToken(email);
+        return ResponseEntity.ok().build();
+    }
+
+
     @GetMapping("/refresh")
     @ApiMessage("Get Access Token")
     public ResponseEntity<LoginResponce> getAccessToken(@CookieValue(name = "refresh-token", defaultValue = "") String refresh_token) throws EntityExistsException {

@@ -25,7 +25,8 @@ public class GlobalException {
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler({
     EntityExistsException.class,
-    EmailAlreadyExistsException.class
+    EmailAlreadyExistsException.class,
+    VerificationException.class
   })
   public ResponseEntity<RestResponce<Object>> badRequestException(RuntimeException exception) {
     RestResponce<Object> res = new RestResponce<>();

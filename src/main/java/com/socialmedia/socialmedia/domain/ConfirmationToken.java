@@ -1,5 +1,5 @@
 package com.socialmedia.socialmedia.domain;
-
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -18,24 +18,30 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-@Entity
-@Table(name = "resources")
+@Table(name = "confirmation_token")
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity
 @Getter
 @Setter
 @Builder
-public class Resource {
-      @Id
+public class ConfirmationToken {
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
+
     @Column(nullable = false)
-    private String url;
+    private long token;
+
     @Column(nullable = false)
-    private String type;
+    private LocalDateTime expiresAt;
+
+    private LocalDateTime confirmedAt;
+
     @ManyToOne
-    @JoinColumn(name = "post_id", nullable = false)
-    private Post post;
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
      @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
