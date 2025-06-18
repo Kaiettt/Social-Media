@@ -1,7 +1,10 @@
 package com.socialmedia.socialmedia.domain;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -58,9 +61,18 @@ public class User implements UserDetails{
 
     private String bio;
 
+    private String avartar;
     private String phoneNumber;
     private int followersCount;
     private int followingCount;
+
+    private Boolean isVerified;
+     @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY) 
     private List<Post> posts;

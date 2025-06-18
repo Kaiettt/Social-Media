@@ -24,11 +24,13 @@ public class LoginResponce {
     @NoArgsConstructor
     @Getter
     @Setter
+    @Builder
     public static class UserLogin{
         private long id;
         private String firstName;
         private String lastName;
         private String userName;
         private Role role;
+        private String avatar;
     }
 }
